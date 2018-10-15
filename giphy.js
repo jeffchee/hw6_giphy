@@ -4,40 +4,6 @@ $(document).ready(function () {
   var characters = ["luffy", "zoro", "sanji", "nami", "usopp", "brooke", "Franky", "chopper", "nico robin"];
 
 
-  $("#add-OP").on("click", function () {
-    $("#OP").empty();
-    $(this).addClass("active");
-    var type = $(this).attr("data-name");
-    var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + type + "&api_key=dc6zaTOxFJmzC&limit=10";
-
-    $.ajax({
-      url: queryURL,
-      method: "GET"
-    })
-      .then(function (response) {
-        console.log(response)//getting data back now
-        var results = response.data;
-
-        for (var i = 0; i < results.length; i++) {
-          var OPdiv = $("<div class = \"OP-item\">")
-          var rating = results[i].rating;
-          var p = $("<p>").text("Rating: " + rating);
-          var OPImg = results[i].images.fixed_height
-          
-          
-          // OPImg.attr("<img>");
-          // OPImg.attr("src");
-          OPdiv.append(p);
-          OPdiv.append(OPImg);
-          $("#OP").append(OPdiv);
-
-        }
-
-      })
-  })
-
-
-
   function renderButtons() {
     $("#op-views").empty();
     for (var i = 0; i < characters.length; i++) {
@@ -62,6 +28,40 @@ $(document).ready(function () {
 
 
   renderButtons();
+  // $(characters).attr("data-name");
+
+  $(document).on("click", function () {
+    $("#OP").empty();
+    $(this).addClass("active");
+    var type = characters
+    var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + type + "&api_key=dc6zaTOxFJmzC&limit=10";
+
+    $.ajax({
+      url: queryURL,
+      method: "GET"
+    })
+      .then(function (response) {
+        console.log(response)//getting data back now
+        var results = response.data;
+
+        for (var i = 0; i < results.length; i++) {
+          var OPdiv = $("<div class = \"OP-item\">")
+
+          var rating = results[i].rating;
+          var p = $("<p>").text("Rating: " + rating);
+          var OOPPImg = results[i].images.fixed_height.url;
+          
+          var OPImg = $("<img>").attr("src", OOPPImg)
+          
+        
+          OPdiv.append(p);
+          OPdiv.append(OPImg);
+          $("#OP").append(OPdiv);
+
+        }
+
+      })
+  })
 
 
 })//ending tag
